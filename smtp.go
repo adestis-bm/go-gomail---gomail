@@ -15,7 +15,7 @@ type Dialer struct {
 	// Host represents the host of the SMTP server.
 	Host string
 	// Port represents the port of the SMTP server.
-	Port int
+	Port string
 	// Username is the username to use to authenticate to the SMTP server.
 	Username string
 	// Password is the password to use to authenticate to the SMTP server.
@@ -37,22 +37,14 @@ type Dialer struct {
 
 // NewDialer returns a new SMTP Dialer. The given parameters are used to connect
 // to the SMTP server.
-func NewDialer(host string, port int, username, password string) *Dialer {
+func NewDialer(host string, port string, username, password string) *Dialer {
 	return &Dialer{
 		Host:     host,
 		Port:     port,
 		Username: username,
 		Password: password,
-		SSL:      port == 465,
+		SSL:      port == "465",
 	}
-}
-
-// NewPlainDialer returns a new SMTP Dialer. The given parameters are used to
-// connect to the SMTP server.
-//
-// Deprecated: Use NewDialer instead.
-func NewPlainDialer(host string, port int, username, password string) *Dialer {
-	return NewDialer(host, port, username, password)
 }
 
 // Dial dials and authenticates to an SMTP server. The returned SendCloser
@@ -121,8 +113,8 @@ func (d *Dialer) tlsConfig() *tls.Config {
 	return d.TLSConfig
 }
 
-func addr(host string, port int) string {
-	return fmt.Sprintf("%s:%d", host, port)
+func addr(host string, port string) string {
+	return fmt.Sprintf("%s:%s", host, port)
 }
 
 // DialAndSend opens a connection to the SMTP server, sends the given emails and

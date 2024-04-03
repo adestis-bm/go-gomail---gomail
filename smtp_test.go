@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	testPort    = 587
-	testSSLPort = 465
+	testPort    = "587"
+	testSSLPort = "465"
 )
 
 var (
